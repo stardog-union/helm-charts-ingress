@@ -1,0 +1,190 @@
+---
+# The namespace for Stardog resources that override the release namespace
+# namespaceOverride: stardog
+
+# The number of Stardog replicas to deploy in the cluster
+replicaCount: 3
+
+# How to start the pods - use OrderedReady to use the default behavior of
+# starting each pod one at a time or use Parallel to start them all at once
+podManagementPolicy: Parallel
+
+# The number of seconds the post install job will wait for Stardog to
+# start. This includes the total time to launch the cluster in k8s,
+# including ZooKeeper. Consider increasing it for k8s providers that
+# have slower resource provisioning.
+waitForStartSeconds: 300
+
+cluster:
+  # Start Stardog as a cluster
+  enabled: true
+
+# The number of seconds to wait for pods to shutdown before
+# killing them forcefully
+terminationGracePeriodSeconds: 300
+
+# Java args for Stardog server
+javaArgs: "-Xmx2g -Xms2g -XX:MaxDirectMemorySize=1g"
+
+# Additional arguments passed to Stardog at server start
+serverStartArgs: ""
+
+# Stardog Java perf args, e.g. for changing Java gc
+stardogPerfJavaArgs: "-XX:SoftRefLRUPolicyMSPerMB=1 -XX:+UseG1GC -XX:+UseCompressedOops"
+
+# The service type to use for Stardog ports
+service:
+  type: LoadBalancer
+  annotations: {}
+  # loadBalancerIP: 0.0.0.0
+
+# The server port is the port to expose the Stardog server
+# The sql port is the port to expose Stardog's business intelligence server
+ports:
+  server: 5820
+  # sql: 5806
+
+# The location Stardog will use for temporary space (i.e. java.io.tmpdir).
+# If you choose to place this in STARDOG_HOME (/var/opt/stardog) for performance
+# reasons, ensure that it does not conflict with any possible database names.
+# For example, a good choice might be /var/opt/stardog/tmp-4646E7B662A7.
+# If the directory does not exist it will be created.
+tmpDir: /tmp
+
+# The initial password for the Stardog admin user
+admin:
+  password: admin
+
+image:
+  registry: https://registry.hub.docker.com/v1/repositories
+  repository: stardog/stardog
+# Alternative config to pull from Stardog private repository
+  # registry: stardog-eps-docker.jfrog.io
+  # repository: stardog-eps-docker.jfrog.io/stardog
+  tag: latest
+  pullPolicy: IfNotPresent
+  # username:
+  # password:
+
+# The storage class and size to use for Stardog home volumes for the pods
+persistence:
+  storageClass: standard
+  size: 5Gi
+
+nodeSelector: {}
+tolerations: []
+#  - key: key1
+#    value: value1
+#    effect: NoSchedule
+
+antiAffinity: requiredDuringSchedulingIgnoredDuringExecution
+
+# Stardog should have at least 2 CPUs. The CPU request value is used to set
+# -XX:ActiveProcessorCount=N for the JVM.
+resources:
+  requests:
+    cpu: 2
+    memory: 4Gi
+#  limits:
+#    cpu: 2
+#    memory: 6Gi
+
+
+# these allow you to configure the UID and group ID used by the container when it's running, and the fsGroup sets the group id for the volume-mounts
+# if enabled: false, then the whole block is skipped
+securityContext:
+  enabled: false
+  runAsUser: null
+  runAsGroup: null
+  fsGroup: null
+
+log4jConfig:
+  override: false
+  # we provide a default log4j2.xml, if you want to provide your own. in your own values.yaml, set log4Config.override: true, and log4Config.content
+  # content: null
+
+# Stardog liveness probe settings. Consider increasing initialDelaySeconds on clouds where
+# storage provisioning is slower. It is not generally required to modify periodSeconds and timeoutSeconds.
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 30
+  timeoutSeconds: 15
+
+# Stardog readiness probe settings. Consider increasing initialDelaySeconds when using nodes with
+# K8S nodes with limited CPUs. It is not generally required to modify periodSeconds and timeoutSeconds.
+readinessProbe:
+  initialDelaySeconds: 15
+  periodSeconds: 5
+  timeoutSeconds: 3
+
+# Add additional settings to the stardog config file. e.g.
+# additionalStardogProperties: |
+#   logging.slow_query.enabled=true
+#   logging.slow_query.time=10s
+additionalStardogProperties: |
+
+# The busybox image is used as light weight init container as a part of
+# stardog initialization.
+busybox:
+  image:
+    registry: https://registry.hub.docker.com/v1/repositories
+    repository: busybox
+    tag: stable
+    pullPolicy: IfNotPresent
+    # username:
+    # password:
+
+# Settings to use for the ZooKeeper chart that Stardog depends on.
+# The full set of options can be found on the bitname ZK chart:
+# https://github.com/bitnami/charts/tree/master/bitnami/zookeeper
+zookeeper:
+  enabled: true
+  replicaCount: 3
+  podDisruptionBudget:
+    maxUnavailable: 1
+  persistence:
+    enabled: true
+    storageClass: standard
+    size: 5Gi
+  resources:
+    requests:
+      memory: 2Gi
+      cpu: 1
+  image:
+    repository: bitnami/zookeeper
+    tag: 3.5.7
+    pullPolicy: IfNotPresent
+  logLevel: INFO
+#  livenessProbe:
+#    enabled: true
+#    initialDelaySeconds: 30
+#    periodSeconds: 10
+#    timeoutSeconds: 5
+#    failureThreshold: 6
+#    successThreshold: 1
+#    probeCommandTimeout: 2
+#  readinessProbe:
+#    enabled: true
+#    initialDelaySeconds: 5
+#    periodSeconds: 10
+#    timeoutSeconds: 5
+#    failureThreshold: 6
+#    successThreshold: 1
+#    probeCommandTimeout: 2
+
+ingress:
+  enabled: false
+  annotations: {}
+  # nginx.ingress.kubernetes.io/use-regex: "true"
+  # nginx.ingress.kubernetes.io/app-root: "/admin/alive"
+  # kubernetes.io/tls-acme: "true" 
+  className: "nginx" 
+  pathtype: Prefix
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
