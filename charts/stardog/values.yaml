@@ -178,12 +178,12 @@ ingress:
   # nginx.ingress.kubernetes.io/use-regex: "true"
   # nginx.ingress.kubernetes.io/app-root: "/admin/alive"
   # kubernetes.io/tls-acme: "true" 
-  className: "nginx" 
-  pathtype: Prefix
-  hosts:
-    - host: chart-example.local
-      paths:
-        - path: /
+  #className: "nginx" 
+  #pathtype: Prefix
+  hosts: []
+    # - host: chart-example.local
+    #   paths:
+    #     - path: /
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
