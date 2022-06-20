@@ -3,14 +3,14 @@ entries:
   stardog:
   - apiVersion: v2
     appVersion: latest
-    created: "2022-05-25T16:58:07.57387-04:00"
+    created: "2022-06-20T07:20:07.510794-04:00"
     dependencies:
     - condition: zookeeper.enabled
       name: zookeeper
-      repository: https://charts.bitnami.com/bitnami
+      repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
       version: 5.5.1
     description: Helm chart to deploy Stardog Cluster and associated services
-    digest: 78927d1fc974403f3ed2358ad3551240833169035652ba2146949ba7e160d5ad
+    digest: bd1771524cf34022a0343554786d93ad551f8d7170cd8a1be3f5f77ad326829c
     home: https://github.com/stardog-union/helm-charts-ingress
     icon: https://s3.amazonaws.com/stardog-logos.public/stardog-logo.png
     maintainers:
@@ -21,4 +21,4 @@ entries:
     urls:
     - https://github.com/stardog-union/helm-charts-ingress/releases/download/stardog-2.0.5/stardog-2.0.5.tgz
     version: 2.0.5
-generated: "2022-05-25T16:58:07.57155-04:00"
+generated: "2022-06-20T07:20:07.50875-04:00"
