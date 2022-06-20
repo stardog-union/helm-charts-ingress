@@ -14,6 +14,7 @@ Features:
   - Support auto-generated self-signed certificates
   - Support specific domain certificates via Azure Key Vault.
 
+- Patch the zookeeper dependency in stardog chart a result of change in the bitnami retention policy (#71)
 
 # 2.0.4 (2021-12-07)
 
