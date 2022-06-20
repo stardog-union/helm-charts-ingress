@@ -37,7 +37,7 @@ Installing
 
 ```
 $ kubectl -n <your-namespace> create secret generic stardog-license --from-file stardog-license-key.bin=/path/to/stardog-license-key.bin
-$ helm repo add stardog https://stardog-union.github.io/helm-charts/
+$ helm repo add stardog https://stardog-union.github.io/helm-charts-ingress/
 $ helm install <helm-release-name> --namespace <your-namespace> stardog/stardog
 ```
 
