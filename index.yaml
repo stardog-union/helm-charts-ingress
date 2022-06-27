@@ -10,7 +10,7 @@ entries:
       repository: https://raw.githubusercontent.com/bitnami/charts/eb5f9a9513d987b519f0ecd732e7031241c50328/bitnami
       version: 5.5.1
     description: Helm chart to deploy Stardog Cluster and associated services
-    digest: bd1771524cf34022a0343554786d93ad551f8d7170cd8a1be3f5f77ad326829c
+    digest: 09b97ad6da113590f50537da9a915abcbbb0195643823ce5212f4cb9627ce03c
     home: https://github.com/stardog-union/helm-charts-ingress
     icon: https://s3.amazonaws.com/stardog-logos.public/stardog-logo.png
     maintainers:
@@ -21,4 +21,4 @@ entries:
     urls:
     - https://github.com/stardog-union/helm-charts-ingress/releases/download/stardog-2.0.5/stardog-2.0.5.tgz
     version: 2.0.5
-generated: "2022-06-20T07:20:07.50875-04:00"
+generated: "2022-06-27T05:18:12.938717-04:00"
