@@ -112,6 +112,13 @@ spec:
         - name: {{ include "stardog.fullname" . }}-log4j-vol
           mountPath: /var/opt/stardog/log4j2.xml
           subPath: log4j2.xml
+{{ if .Values.backup.enabled }}
+{{ if eq .Values.backup.provider "azure" }}
+        - name: {{ include "stardog.fullname" . }}-az-backups
+          mountPath: /var/opt/stardog-backups 
+{{ end }}
+{{ end }} 
+         
         env:
         - name: PORT
           value: "{{ .Values.ports.server }}"
@@ -188,6 +195,13 @@ spec:
             - key: password
               path: adminpw
               mode: 444
+{{ if .Values.backup.enabled }}
+{{ if eq .Values.backup.provider "azure" }}
+      - name: {{ include "stardog.fullname" . }}-az-backups
+        persistentVolumeClaim:
+          claimName: {{ include "stardog.fullname" . }}-azurefile-bck-pvc 
+{{ end }}
+{{ end }} 
       nodeSelector:
 {{ toYaml .Values.nodeSelector | indent 8 }}
   volumeClaimTemplates:

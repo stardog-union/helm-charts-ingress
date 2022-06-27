@@ -1,0 +1,41 @@
+{{- if .Values.backup.enabled -}}
+{{- if eq .Values.backup.provider "azure" -}}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "stardog.fullname" . }}-azurefile-bck-pv
+  namespace: {{ include "stardog.namespace" . }}
+  labels:
+    helm.sh/chart: {{ include "stardog.chart" . }}
+    app.kubernetes.io/name: {{ .Chart.Name }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+spec:
+  capacity:
+    storage: {{ .Values.backup.azure.storage.capacity }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ .Values.backup.azure.storage.className }} 
+  csi:
+    driver: 'file.csi.azure.com'
+    readOnly: false
+    volumeHandle: {{ include "stardog.fullname" . }}-volume-handle-backup
+    volumeAttributes:
+      resourceGroup: {{ .Values.backup.azure.storage.resourceGroup }} 
+      shareName:  {{ .Values.backup.azure.storage.shareName }}
+    nodeStageSecretRef:
+      name: {{ include "stardog.fullname" . }}-backup-secret
+      namespace: {{ include "stardog.namespace" . }}
+  mountOptions:
+    - dir_mode=0777
+    - file_mode=0777
+    - uid=0
+    - gid=0
+    - mfsymlinks
+    - cache=strict
+    - nosharesock
+    - nobrl
+{{- end }}
+{{- end }}

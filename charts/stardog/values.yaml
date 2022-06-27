@@ -188,3 +188,15 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+backup:
+  enabled: false
+  # provider: azure
+  # azure:
+  #   azurestorageaccountkey: 
+  #   azurestorageaccountname: 
+  #   storage:
+  #     capacity: 100Gi
+  #     className: azurefile-csi 
+  #     resourceGroup: 
+  #     shareName:
